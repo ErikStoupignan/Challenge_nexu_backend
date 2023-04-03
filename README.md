@@ -19,7 +19,8 @@
   - [Testing](#testing)
 - [🔭 ScreenShots](#screen-shots)
   - [Routes](#routes)
-  - [Testing](#testing)
+  - [Testing Controllers](#testing-controllers)
+  - [Validations](#validations)
 
 <!-- PROJECT DESCRIPTION -->
 
@@ -209,7 +210,7 @@ rails test
 ### GET /models
 <img src="public\assets\get_models.png">
 
-## Testing Controllers with Rails Test
+## Testing Controllers
 
 <img src="public\assets\Testing_controllers.png">
 
