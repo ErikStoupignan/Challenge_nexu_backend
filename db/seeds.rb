@@ -1,7 +1,21 @@
-# This file should contain all the record creation needed to seed the database with its default values.
-# The data can then be loaded with the bin/rails db:seed command (or created alongside the database with db:setup).
-#
-# Examples:
-#
-#   movies = Movie.create([{ name: "Star Wars" }, { name: "Lord of the Rings" }])
-#   Character.create(name: "Luke", movie: movies.first)
+
+require 'json'
+
+# Cleans the database when reloading the seed
+Brand.destroy_all
+Model.destroy_all
+
+# Reads the models.json file with the challenge information 
+# and translates it with the parse function
+file = File.read('db\models.json')
+models_data = JSON.parse(file)
+
+models_data.each do |model_data|
+  brand = Brand.find_or_create_by!(name: model_data['brand_name'])
+  Model.create!(
+    id: model_data['id'],
+    name: model_data['name'],
+    average_price: model_data['average_price'],
+    brand:
+  )
+end
