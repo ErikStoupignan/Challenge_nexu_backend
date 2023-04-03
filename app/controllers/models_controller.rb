@@ -3,9 +3,17 @@ class ModelsController < ApplicationController
 
   # GET /models
   def index
-    @models = Model.where(brand_id: params[:brand_id])
-
-    @models = Model.all if @models.length === 0 # rubocop:disable Style/CaseEquality
+    @models = if params[:greater] && params[:lower] # Filter all the models between range given
+                if params[:greater] > params[:lower] # Verify that greater is smallest than lower
+                  ['LOWER cannot be greater than GREATER']
+                else
+                  Model.where('average_price >= ? AND average_price <= ?', params[:greater], params[:lower])
+                end
+              elsif params[:brand_id]
+                Model.where(brand_id: params[:brand_id]) # Find a specific Id model inside a Brand
+              else
+                Model.all # If any id is not given, then return all the models
+              end
 
     render json: @models
   end
@@ -49,7 +57,7 @@ class ModelsController < ApplicationController
 
   # Only allow a list of trusted parameters through.
   def model_params
-    params.require(:model).permit(:name, :average_price, :brand_id)
+    params.require(:model).permit(:name, :average_price, :brand_id, :greater, :lower)
   end
 
   def model_update_params
