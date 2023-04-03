@@ -3,7 +3,9 @@ class ModelsController < ApplicationController
 
   # GET /models
   def index
-    @models = Model.all
+    @models = Model.where(brand_id: params[:brand_id])
+
+    @models = Model.all if @models.length === 0 # rubocop:disable Style/CaseEquality
 
     render json: @models
   end
@@ -26,7 +28,7 @@ class ModelsController < ApplicationController
 
   # PATCH/PUT /models/1
   def update
-    if @model.update(model_params)
+    if @model.update(model_update_params)
       render json: @model
     else
       render json: @model.errors, status: :unprocessable_entity
@@ -48,5 +50,9 @@ class ModelsController < ApplicationController
   # Only allow a list of trusted parameters through.
   def model_params
     params.require(:model).permit(:name, :average_price, :brand_id)
+  end
+
+  def model_update_params
+    params.require(:model).permit(:average_price)
   end
 end
