@@ -16,11 +16,10 @@
 - [💻 Getting Started](#getting-started)
   - [Prerequisites](#prerequisites)
   - [Setup](#setup)
-  - [Install](#install)
   - [Testing](#testing)
-- [🔭 ScreenShots](#ScreenShots)
-  - [Checking routes](#Checking_routes)
-  - [Testing Controllers](#testing-routes)
+- [🔭 ScreenShots](#screen-shots)
+  - [Routes](#routes)
+  - [Testing](#testing)
 
 <!-- PROJECT DESCRIPTION -->
 
@@ -188,9 +187,9 @@ To run the tests, use the following command:
 rails test
 ```
 
-# 💻 ScreenShots <a id="ScreenShots" name="ScreenShots"></a>
+# 💻 ScreenShots <a id="screen-shots" name="screen-shots"></a>
 
-## Checking routes
+## Routes
 
 ### GET /brands
 <img src="public\assets\get_brands.png">
