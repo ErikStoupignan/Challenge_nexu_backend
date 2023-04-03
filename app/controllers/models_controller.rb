@@ -1,5 +1,5 @@
 class ModelsController < ApplicationController
-  before_action :set_model, only: %i[ show update destroy ]
+  before_action :set_model, only: %i[show update destroy]
 
   # GET /models
   def index
@@ -39,13 +39,14 @@ class ModelsController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_model
-      @model = Model.find(params[:id])
-    end
 
-    # Only allow a list of trusted parameters through.
-    def model_params
-      params.require(:model).permit(:name, :average_price, :brand_id)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_model
+    @model = Model.find(params[:id])
+  end
+
+  # Only allow a list of trusted parameters through.
+  def model_params
+    params.require(:model).permit(:name, :average_price, :brand_id)
+  end
 end
