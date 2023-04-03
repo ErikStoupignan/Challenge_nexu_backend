@@ -2,10 +2,12 @@
 
 one:
   name: MyString
-  average_price: 9.99
+  average_price: 120000
   brand: one
+  brand_id: 1
 
 two:
   name: MyString
-  average_price: 9.99
+  average_price: 150000
   brand: two
+  brand_id: 2
