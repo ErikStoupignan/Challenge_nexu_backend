@@ -4,5 +4,6 @@ Rails.application.routes.draw do
     resources :models, only: %i[index create]
   end
 
-  resources :models, only: %i[index update]
+  resources :models, only: %i[update]
+  get "models", to: "models#interval"
 end

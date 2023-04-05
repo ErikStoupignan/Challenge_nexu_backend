@@ -1,31 +1,33 @@
 class ModelsController < ApplicationController
   before_action :set_model, only: %i[show update destroy]
+  before_action :set_brand, only: [:create]
 
-  # GET /models
+  # GET Brands/:id/models
   def index
-    @models = if params[:greater] && params[:lower] # Filter all the models between range given
-                if params[:greater] > params[:lower] # Verify that greater is smallest than lower
-                  ['LOWER cannot be greater than GREATER']
-                else
-                  Model.where('average_price >= ? AND average_price <= ?', params[:greater], params[:lower])
-                end
-              elsif params[:brand_id]
-                Model.where(brand_id: params[:brand_id]) # Find a specific Id model inside a Brand
+    @models = Model.where(brand_id: params[:brand_id])
+    render json: @models
+  end
+
+  # GET /models || /models?greater="greaterValue"&lower="lowerValue"
+  def interval
+    @models = if params[:greater] && params[:lower]
+                Model.greaterThan(params[:greater]).smallerThan(params[:lower])
               else
-                Model.all # If any id is not given, then return all the models
+                Model.all
               end
 
     render json: @models
   end
 
-  # GET /models/1
+  # GET Brands/:id/models/1
   def show
     render json: @model
   end
 
-  # POST /models
+  # POST Brands/:id/models
   def create
     @model = Model.new(model_params)
+    @model.brand = @brand
 
     if @model.save
       render json: @model, status: :created, location: @model
@@ -48,16 +50,20 @@ class ModelsController < ApplicationController
     @model.destroy
   end
 
-  private
+  private # -------------------------------------------------------------------------------------------------------------------
 
   # Use callbacks to share common setup or constraints between actions.
   def set_model
     @model = Model.find(params[:id])
   end
 
+  def set_brand
+    @brand = Brand.find(params[:brand_id])
+  end
+
   # Only allow a list of trusted parameters through.
   def model_params
-    params.require(:model).permit(:name, :average_price, :brand_id, :greater, :lower)
+    params.require(:model).permit(:name, :average_price, :brand_id)
   end
 
   def model_update_params
