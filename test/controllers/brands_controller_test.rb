@@ -19,7 +19,6 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
   end
 
   test 'should not create brand' do
-    # Create a Brand with the name Testing
     post brands_url, params: { brand: { name: 'Testing' } }, as: :json
 
     assert_difference('Brand.count', 0) do
@@ -32,5 +31,20 @@ class BrandsControllerTest < ActionDispatch::IntegrationTest
   test 'should show brand' do
     get brand_url(@brand), as: :json
     assert_response :success
+  end
+
+  test 'Post a new model inside a brand' do
+    post brand_models_url(@brand), params: { model: { name: 'Modelo de pruena', average_price: '100001' } }, as: :json
+    assert_response :success
+  end
+
+  test 'Average_price can not be smaller than 100,000' do
+    post brand_models_url(@brand), params: { model: { name: 'Modelo de pruena', average_price: '100' } }, as: :json
+    assert_response 422
+  end
+
+  test 'Name can not be empty' do
+    post brand_models_url(@brand), params: { model: { name: '', average_price: '100' } }, as: :json
+    assert_response 422
   end
 end

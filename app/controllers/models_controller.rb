@@ -1,23 +1,33 @@
 class ModelsController < ApplicationController
   before_action :set_model, only: %i[show update destroy]
+  before_action :set_brand, only: [:create]
 
-  # GET /models
+  # GET Brands/:id/models
   def index
     @models = Model.where(brand_id: params[:brand_id])
+    render json: @models
+  end
 
-    @models = Model.all if @models.length === 0 # rubocop:disable Style/CaseEquality
+  # GET /models || /models?greater="greaterValue"&lower="lowerValue"
+  def interval
+    @models = if params[:greater] && params[:lower]
+                Model.greaterThan(params[:greater]).smallerThan(params[:lower])
+              else
+                Model.all
+              end
 
     render json: @models
   end
 
-  # GET /models/1
+  # GET Brands/:id/models/1
   def show
     render json: @model
   end
 
-  # POST /models
+  # POST Brands/:id/models
   def create
     @model = Model.new(model_params)
+    @model.brand = @brand
 
     if @model.save
       render json: @model, status: :created, location: @model
@@ -40,11 +50,15 @@ class ModelsController < ApplicationController
     @model.destroy
   end
 
-  private
+  private # -------------------------------------------------------------------------------------------------------------------
 
   # Use callbacks to share common setup or constraints between actions.
   def set_model
     @model = Model.find(params[:id])
+  end
+
+  def set_brand
+    @brand = Brand.find(params[:brand_id])
   end
 
   # Only allow a list of trusted parameters through.
